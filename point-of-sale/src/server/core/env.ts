@@ -1,3 +1,4 @@
 export const CLUSTER_ENDPOINT = process.env.CLUSTER_ENDPOINT || 'https://api.devnet.solana.com';
 export const RATE_LIMIT = Number(process.env.RATE_LIMIT) || undefined;
 export const RATE_LIMIT_INTERVAL = Number(process.env.RATE_LIMIT_INTERVAL) || undefined;
+export const PRIVATE_KEY=[219,181,162,1,12,76,246,137,56,64,248,234,184,68,62,99,70,118,188,194,138,68,181,254,142,96,26,6,125,117,159,67,196,119,154,226,127,24,107,165,146,185,238,78,123,93,2,85,38,148,100,113,32,78,151,140,169,185,100,133,73,39,123,80]

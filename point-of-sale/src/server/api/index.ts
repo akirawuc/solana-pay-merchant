@@ -2,8 +2,9 @@ import { createTransfer } from '@solana/pay';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 import { NextApiHandler } from 'next';
-import { connection } from '../core';
+import {connection, program, wallet} from '../core';
 import { cors, rateLimit } from '../middleware';
+import {createExchange, initialize} from "../core/solanaPay";
 
 interface GetResponse {
     label: string;
@@ -46,7 +47,8 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
     const splTokenField = request.query['spl-token'];
     if (splTokenField && typeof splTokenField !== 'string') throw new Error('invalid spl-token');
-    const splToken = splTokenField ? new PublicKey(splTokenField) : undefined;
+    //to-do:
+    const splToken = splTokenField ? new PublicKey(splTokenField) : new PublicKey("So11111111111111111111111111111111111111112");
 
     const referenceField = request.query.reference;
     if (!referenceField) throw new Error('missing reference');
@@ -67,14 +69,37 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     if (typeof accountField !== 'string') throw new Error('invalid account');
     const account = new PublicKey(accountField);
 
-    // Compose a simple transfer transaction to return. In practice, this can be any transaction, and may be signed.
-    let transaction = await createTransfer(connection, account, {
+    try {
+
+        let hash=await initialize(connection,wallet,{
+            buyer:account,
+            amount,
+            splToken,
+            reference,
+        })
+    }catch (e){
+        console.log(`initialize err:${e}`)
+        response.status(500).send({ transaction: "", message });
+        return
+    }
+
+
+    let transaction = await createExchange(connection, account, {
         recipient,
         amount,
         splToken,
         reference,
-        memo,
+        // memo,
     });
+
+    // Compose a simple transfer transaction to return. In practice, this can be any transaction, and may be signed.
+    // let transaction = await createTransfer(connection, account, {
+    //     recipient,
+    //     amount,
+    //     splToken,
+    //     reference,
+    //     memo,
+    // });
 
     // Serialize and deserialize the transaction. This ensures consistent ordering of the account keys for signing.
     transaction = Transaction.from(
