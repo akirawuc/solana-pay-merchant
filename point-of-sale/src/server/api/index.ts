@@ -84,10 +84,11 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     // }
     //
     //
+    const token=new PublicKey("So11111111111111111111111111111111111111112");
     let transaction = await createExchange(connection, account, {
         recipient,
         amount,
-        splToken,
+        splToken:token,
         reference,
         // memo,
     });
