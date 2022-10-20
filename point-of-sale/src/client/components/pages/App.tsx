@@ -6,7 +6,7 @@ import { PublicKey } from '@solana/web3.js';
 import { AppContext, AppProps as NextAppProps, default as NextApp } from 'next/app';
 import { AppInitialProps } from 'next/dist/shared/lib/utils';
 import { FC, useMemo } from 'react';
-import { MAINNET_ENDPOINT } from '../../utils/constants';
+import { DEVNET_ENDPOINT } from '../../utils/constants';
 import { ConfigProvider } from '../contexts/ConfigProvider';
 import { FullscreenProvider } from '../contexts/FullscreenProvider';
 import { PaymentProvider } from '../contexts/PaymentProvider';
@@ -34,7 +34,7 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
     const baseURL = `https://${host}`;
 
     // If you're testing without a mobile wallet, set this to true to allow a browser wallet to be used.
-    const connectWallet = false;
+    const connectWallet = true;
     // If you're testing without a mobile wallet, set this to Devnet or Mainnet to configure some browser wallets.
     const network = WalletAdapterNetwork.Devnet;
 
@@ -65,13 +65,13 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
         <ThemeProvider>
             <FullscreenProvider>
                 {recipient && label ? (
-                    <ConnectionProvider endpoint={MAINNET_ENDPOINT}>
+                    <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
                         <WalletProvider wallets={wallets} autoConnect={connectWallet}>
                             <WalletModalProvider>
                                 <ConfigProvider
                                     baseURL={baseURL}
                                     link={link}
-                                    splToken={new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")}
+                                    // splToken={new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")}
                                     recipient={recipient}
                                     label={label}
                                     message={message}
