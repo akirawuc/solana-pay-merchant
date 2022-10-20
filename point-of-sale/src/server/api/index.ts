@@ -69,21 +69,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     if (typeof accountField !== 'string') throw new Error('invalid account');
     const account = new PublicKey(accountField);
 
-    try {
-
-        let hash=await initialize(connection,wallet,{
-            buyer:account,
-            amount,
-            splToken,
-            reference,
-        })
-    }catch (e){
-        console.log(`initialize err:${e}`)
-        response.status(500).send({ transaction: "", message });
-        return
-    }
-
-
+    // try {
+    //
+    //     let hash=await initialize(connection,wallet,{
+    //         buyer:account,
+    //         amount,
+    //         splToken,
+    //         reference,
+    //     })
+    // }catch (e){
+    //     console.log(`initialize err:${e}`)
+    //     response.status(500).send({ transaction: "", message });
+    //     return
+    // }
+    //
+    //
     let transaction = await createExchange(connection, account, {
         recipient,
         amount,
